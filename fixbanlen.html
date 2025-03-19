@@ -344,6 +344,13 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             color: #666;
         }
+
+        .wishlist-btn.active {
+            color: #ff6b8b;
+        }
+        .wishlist-btn.active::before {
+            content: '❤️';
+        }
         
         .product-info {
             padding: 1.2rem;
@@ -911,6 +918,220 @@
             margin: 0 auto;
         }
     </style>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-functions.js"></script>
+    <script src="https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_CLIENT_ID"></script>
+    
+    <!-- Thêm các file JavaScript mới -->
+    <script src="js/firebase-config.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/payment.js"></script>
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        const functions = firebase.functions();
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Wishlist functionality
+            document.querySelectorAll('.wishlist-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    this.classList.toggle('active');
+                    // Save to Firestore
+                    const user = auth.currentUser;
+                    if (user) {
+                        const productId = this.dataset.productId;
+                        const isActive = this.classList.contains('active');
+                        db.collection('users').doc(user.uid).collection('wishlist').doc(productId).set({
+                            active: isActive
+                        });
+                    }
+                });
+            });
+
+            // Login modal functionality
+            const loginModal = document.getElementById('login-modal');
+            const openLoginBtn = document.getElementById('open-login');
+            const closeLoginBtn = document.getElementById('close-login');
+
+            openLoginBtn.addEventListener('click', function(event) {
+                event.preventDefault();
+                loginModal.style.display = 'flex';
+            });
+
+            closeLoginBtn.addEventListener('click', function() {
+                loginModal.style.display = 'none';
+            });
+
+            window.addEventListener('click', function(event) {
+                if (event.target === loginModal) {
+                    loginModal.style.display = 'none';
+                }
+            });
+
+            // Register modal functionality
+            const registerModal = document.getElementById('register-modal');
+            const openRegisterLink = document.getElementById('open-register');
+            const closeRegisterBtn = document.getElementById('close-register');
+
+            openRegisterLink.addEventListener('click', function(event) {
+                event.preventDefault();
+                loginModal.style.display = 'none';
+                registerModal.style.display = 'flex';
+            });
+
+            closeRegisterBtn.addEventListener('click', function() {
+                registerModal.style.display = 'none';
+            });
+
+            window.addEventListener('click', function(event) {
+                if (event.target === registerModal) {
+                    registerModal.style.display = 'none';
+                }
+            });
+
+            // Add to cart functionality
+            const cartCount = document.querySelector('.cart-count');
+            let cartItems = 0;
+
+            document.querySelectorAll('.add-to-cart').forEach(button => {
+                button.addEventListener('click', function() {
+                    cartItems++;
+                    cartCount.textContent = cartItems;
+                    // Save to Firestore
+                    const user = auth.currentUser;
+                    if (user) {
+                        const productId = this.dataset.productId;
+                        db.collection('users').doc(user.uid).collection('cart').doc(productId).set({
+                            quantity: 1
+                        });
+                    }
+                });
+            });
+
+            // Firebase Authentication
+            document.getElementById('login-form').addEventListener('submit', function(event) {
+                event.preventDefault();
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                auth.signInWithEmailAndPassword(email, password)
+                    .then(userCredential => {
+                        loginModal.style.display = 'none';
+                    })
+                    .catch(error => {
+                        console.error('Error signing in:', error);
+                    });
+            });
+
+            document.getElementById('register-form').addEventListener('submit', function(event) {
+                event.preventDefault();
+                const email = document.getElementById('register-email').value;
+                const password = document.getElementById('register-password').value;
+                auth.createUserWithEmailAndPassword(email, password)
+                    .then(userCredential => {
+                        registerModal.style.display = 'none';
+                    })
+                    .catch(error => {
+                        console.error('Error registering:', error);
+                    });
+            });
+
+            // Payment integration
+            paypal.Buttons({
+                createOrder: function(data, actions) {
+                    return actions.order.create({
+                        purchase_units: [{
+                            amount: {
+                                value: '0.01' // Replace with the actual amount
+                            }
+                        }]
+                    });
+                },
+                onApprove: function(data, actions) {
+                    return actions.order.capture().then(function(details) {
+                        alert('Transaction completed by ' + details.payer.name.given_name);
+                        // Save order to Firestore
+                        const user = auth.currentUser;
+                        if (user) {
+                            db.collection('users').doc(user.uid).collection('orders').add({
+                                orderId: details.id,
+                                amount: details.purchase_units[0].amount.value,
+                                status: details.status,
+                                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                            });
+                        }
+                    });
+                }
+            }).render('#paypal-button-container');
+
+            // Order management
+            const orderList = document.getElementById('order-list');
+            auth.onAuthStateChanged(user => {
+                if (user) {
+                    db.collection('users').doc(user.uid).collection('orders').orderBy('createdAt', 'desc').onSnapshot(snapshot => {
+                        orderList.innerHTML = '';
+                        snapshot.forEach(doc => {
+                            const order = doc.data();
+                            const orderItem = document.createElement('li');
+                            orderItem.textContent = `Order ID: ${order.orderId}, Amount: ${order.amount}, Status: ${order.status}`;
+                            orderList.appendChild(orderItem);
+                        });
+                    });
+                }
+            });
+
+            // Advanced search and filter
+            document.querySelector('.search-bar input').addEventListener('input', function() {
+                const query = this.value.toLowerCase();
+                document.querySelectorAll('.product-card').forEach(card => {
+                    const title = card.querySelector('.product-title').textContent.toLowerCase();
+                    if (title.includes(query)) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+
+            // Push notifications
+            const messaging = firebase.messaging();
+            messaging.requestPermission()
+                .then(() => messaging.getToken())
+                .then(token => {
+                    console.log('Token received:', token);
+                    // Save token to Firestore
+                    const user = auth.currentUser;
+                    if (user) {
+                        db.collection('users').doc(user.uid).update({
+                            fcmToken: token
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error getting permission or token:', error);
+                });
+
+            // Chat support
+            const chatbot = document.querySelector('.chatbot');
+            chatbot.addEventListener('click', function() {
+                window.open('https://m.me/yourpage', '_blank');
+            });
+        });
+    </script>
 </head>
 <body>
     <header>
@@ -994,7 +1215,7 @@
                 <span class="product-badge">Bán chạy</span>
                 <div class="product-image">
                     <img src="images/download.jpg" alt="Móc khóa hình gấu">
-                    <button class="wishlist-btn">♡</button>
+                    <button class="wishlist-btn" data-product-id="1">♡</button>
                 </div>
                 <div class="product-info">
                     <div class="product-category">Hình thú</div>
@@ -1011,7 +1232,7 @@
                     </div>
                     <div class="product-actions">
                         <button class="btn secondary-btn buy-now">Mua</button>
-                        <button class="btn add-to-cart">Thêm vào giỏ</button>
+                        <button class="btn add-to-cart" data-product-id="1">Thêm vào giỏ</button>
                     </div>
                 </div>
             </div>
@@ -1019,7 +1240,7 @@
             <div class="product-card">
                 <div class="product-image">
                     <img src="images/download (2).jpg" alt="Móc khóa hình mèo">
-                    <button class="wishlist-btn">♡</button>
+                    <button class="wishlist-btn" data-product-id="2">♡</button>
                 </div>
                 <div class="product-info">
                     <div class="product-category">Hình thú</div>
@@ -1035,7 +1256,7 @@
                     </div>
                     <div class="product-actions">
                         <button class="btn secondary-btn buy-now">Mua</button>
-                        <button class="btn add-to-cart">Thêm vào giỏ</button>
+                        <button class="btn add-to-cart" data-product-id="2">Thêm vào giỏ</button>
                     </div>
 
                     
@@ -1058,5 +1279,54 @@
                         </div>
                         <p>&copy; 2025 Móc Khóa Len Handmade. Tất cả quyền được bảo lưu.</p>
                     </footer>
+
+                    <div id="login-modal" class="modal">
+                        <div class="modal-content">
+                            <button id="close-login" class="close-modal">&times;</button>
+                            <div class="login-form">
+                                <h2 class="form-title">Đăng nhập</h2>
+                                <form id="login-form">
+                                    <div class="form-group">
+                                        <label for="email">Email:</label>
+                                        <input type="email" id="email" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="password">Mật khẩu:</label>
+                                        <input type="password" id="password" required>
+                                    </div>
+                                    <button class="btn">Đăng nhập</button>
+                                </form>
+                                <div class="form-footer">
+                                    <p>Chưa có tài khoản? <a href="#" id="open-register">Đăng ký</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="register-modal" class="modal">
+                        <div class="modal-content">
+                            <button id="close-register" class="close-modal">&times;</button>
+                            <div class="login-form">
+                                <h2 class="form-title">Đăng ký</h2>
+                                <form id="register-form">
+                                    <div class="form-group">
+                                        <label for="register-email">Email:</label>
+                                        <input type="email" id="register-email" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="register-password">Mật khẩu:</label>
+                                        <input type="password" id="register-password" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="confirm-password">Xác nhận mật khẩu:</label>
+                                        <input type="password" id="confirm-password" required>
+                                    </div>
+                                    <button class="btn">Đăng ký</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="paypal-button-container"></div>
+                    <ul id="order-list"></ul>
                 </body>
                 </html>
