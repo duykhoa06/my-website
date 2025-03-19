@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LENFRIEND - Móc Khóa Len Handmade - Món Quà Nhỏ Đầy Ý Nghĩa</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Quicksand', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #fef6f6;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* Header & Navigation */
+        header {
+            background-color: #ff96ad;
+            color: white;
+            text-align: center;
+            padding: 1.5rem 0;
+            box-shadow: 0 4px 12px rgba(255, 150, 173, 0.3);
+        }
+        
+        .logo {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: white;
+        }
+        
+        .top-bar {
+            background-color: #fff;
+            padding: 0.5rem 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .top-bar-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .search-bar {
+            display: flex;
+            background-color: #f5f5f5;
+            border-radius: 20px;
+            overflow: hidden;
+            width: 300px;
+        }
+        
+        .search-bar input {
+            border: none;
+            background-color: transparent;
+            padding: 0.5rem 1rem;
+            width: 100%;
+            outline: none;
+        }
+        
+        .search-bar button {
+            background-color: #ff96ad;
+            border: none;
+            color: white;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+        }
+        
+        .user-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .user-actions a {
+            color: #333;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 0.8rem;
+        }
+        
+        .cart-icon {
+            position: relative;
+        }
+        
+        .cart-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: #ff96ad;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+        }
+        
+        nav {
+            background-color: #fff;
+            display: flex;
+            justify-content: center;
+            border-bottom: 1px solid #eee;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            position: relative;
+        }
+        
+        nav ul li a {
+            display: block;
+            padding: 1rem 1.5rem;
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: #ff96ad;
+        }
+        
+        nav ul li:hover .submenu {
+            display: block;
+        }
+        
+        .submenu {
+            display: none;
+            position: absolute;
+            background-color: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            width: 200px;
+            z-index: 100;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .submenu li a {
+            padding: 0.8rem 1rem;
+            font-weight: normal;
+        }
+        
+        /* Hero Banner */
+        .hero-banner {
+            background-color: #ffdde1;
+            padding: 3rem 0;
+            background-image: linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)), url('/api/placeholder/1200/400');
+            background-size: cover;
+            background-position: center;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .hero-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .hero-content h1 {
+            font-size: 2.5rem;
+            color: #ff6b8b;
+            margin-bottom: 1rem;
+        }
+        
+        .hero-content p {
+            margin-bottom: 1.5rem;
+            color: #666;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: #ff96ad;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background-color: #ff6b8b;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 150, 173, 0.4);
+        }
+        
+        .secondary-btn {
+            background-color: white;
+            color: #ff96ad;
+            border: 2px solid #ff96ad;
+            margin-left: 1rem;
+        }
+        
+        .secondary-btn:hover {
+            background-color: #fff5f7;
+        }
+        
+        /* Product Filters */
+        .product-filters {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .filter-group {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            background-color: white;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .filter-btn:hover, .filter-btn.active {
+            background-color: #ff96ad;
+            color: white;
+            border-color: #ff96ad;
+        }
+        
+        .sort-dropdown {
+            padding: 0.5rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            background-color: white;
+        }
+        
+        /* Products Section */
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #ff6b8b;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 3px;
+            background-color: #ff96ad;
+            margin: 0.5rem auto;
+        }
+        
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .product-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .product-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: #ff6b8b;
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .product-image {
+            width: 100%;
+            height: 220px;
+            background-color: #f9f9f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .product-card:hover .product-image img {
+            transform: scale(1.05);
+        }
+        
+        .wishlist-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            color: #666;
+        }
+        
+        .product-info {
+            padding: 1.2rem;
+        }
+        
+        .product-category {
+            font-size: 0.8rem;
+            color: #888;
+            margin-bottom: 0.3rem;
+        }
+        
+        .product-title {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+        
+        .product-rating {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .stars {
+            color: #ffcc00;
+            margin-right: 0.5rem;
+        }
+        
+        .review-count {
+            color: #888;
+        }
+        
+        .product-price {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .price {
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: #ff6b8b;
+        }
+        
+        .old-price {
+            text-decoration: line-through;
+            color: #888;
+            font-size: 0.9rem;
+            margin-left: 0.5rem;
+        }
+        
+        .product-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .buy-now {
+            flex: 1;
+        }
+        
+        .add-to-cart {
+            flex: 2;
+        }
+        
+        /* Features Section */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+            padding: 2rem 0;
+            border-top: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .feature-card {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .feature-icon {
+            width: 50px;
+            height: 50px;
+            background-color: #fff5f7;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ff6b8b;
+            font-size: 1.5rem;
+        }
+        
+        .feature-text h4 {
+            margin-bottom: 0.3rem;
+            color: #333;
+        }
+        
+        .feature-text p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        /* Testimonials */
+        .testimonials {
+            background-color: #fff5f7;
+            padding: 3rem 0;
+            margin: 3rem 0;
+        }
+        
+        .testimonial-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .testimonial-card {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .testimonial-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .testimonial-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 1rem;
+        }
+        
+        .testimonial-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .testimonial-user h4 {
+            margin-bottom: 0.2rem;
+        }
+        
+        .testimonial-user p {
+            color: #888;
+            font-size: 0.9rem;
+        }
+        
+        .testimonial-text {
+            color: #666;
+            font-style: italic;
+            line-height: 1.6;
+        }
+        
+        /* Custom Order Section */
+        .custom-order {
+            background-color: #ffdde1;
+            padding: 3rem 0;
+            text-align: center;
+            margin: 3rem 0;
+            border-radius: 10px;
+        }
+        
+        .custom-order h2 {
+            margin-bottom: 1rem;
+            color: #ff6b8b;
+        }
+        
+        .custom-order p {
+            max-width: 600px;
+            margin: 0 auto 1.5rem;
+            color: #666;
+        }
+        
+        /* Blog Section */
+        .blog-preview {
+            margin: 3rem 0;
+        }
+        
+        .blog-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .blog-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .blog-image {
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .blog-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .blog-card:hover .blog-image img {
+            transform: scale(1.05);
+        }
+        
+        .blog-content {
+            padding: 1.5rem;
+        }
+        
+        .blog-date {
+            color: #888;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .blog-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+        
+        .blog-excerpt {
+            color: #666;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+        
+        .read-more {
+            color: #ff6b8b;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .read-more:hover {
+            text-decoration: underline;
+        }
+        
+        /* Chatbot */
+        .chatbot {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: #ff96ad;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 5px 20px rgba(255, 150, 173, 0.4);
+            cursor: pointer;
+            z-index: 100;
+            transition: all 0.3s;
+        }
+        
+        .chatbot:hover {
+            transform: scale(1.1);
+        }
+        
+        /* Newsletter */
+        .newsletter {
+            background-color: #fff5f7;
+            padding: 3rem 0;
+            text-align: center;
+        }
+        
+        .newsletter h3 {
+            margin-bottom: 1rem;
+            color: #ff6b8b;
+        }
+        
+        .newsletter p {
+            max-width: 600px;
+            margin: 0 auto 1.5rem;
+            color: #666;
+        }
+        
+        .newsletter-form {
+            display: flex;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .newsletter-form input {
+            flex: 1;
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 25px 0 0 25px;
+            outline: none;
+        }
+        
+        .newsletter-form button {
+            background-color: #ff96ad;
+            color: white;
+            border: none;
+            padding: 0 1.5rem;
+            border-radius: 0 25px 25px 0;
+            cursor: pointer;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 3rem 0 1rem;
+            text-align: center;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-column h3 {
+            margin-bottom: 1rem;
+            color: #ff96ad;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-links a {
+            color: #ddd;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: #ff96ad;
+        }
+        
+        .contact-info p {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            color: #ddd;
+        }
+        
+        .contact-icon {
+            margin-right: 0.5rem;
+            color: #ff96ad;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background-color: #444;
+            color: white;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+        
+        .social-links a:hover {
+            background-color: #ff96ad;
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            text-align: center;
+            border-top: 1px solid #444;
+            padding-top: 1.5rem;
+            color: #999;
+            font-size: 0.9rem;
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            max-width: 500px;
+            width: 90%;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+        }
+        
+        .login-form {
+            padding: 2rem;
+        }
+        
+        .form-title {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: #ff6b8b;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #666;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            outline: none;
+        }
+        
+        .form-footer {
+            text-align: center;
+            margin-top: 1rem;
+        }
+        
+        .form-footer a {
+            color: #ff6b8b;
+            text-decoration: none;
+        }
+        
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Custom Product Modal */
+        .custom-form {
+            padding: 2rem;
+        }
+        
+        .color-options {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        
+        .color-option {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        
+        .color-option.active {
+            border-color: #ff6b8b;
+        }
+        
+        .custom-form textarea {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        /* Responsive styles */
+        @media (max-width: 992px) {
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+            
+            .top-bar-content {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem 0;
+            }
+            
+            .search-bar {
+                width: 100%;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .submenu {
+                position: static;
+                box-shadow: none;
+                width: 100%;
+                display: none;
+            }
+            
+            .hero-banner {
+                padding: 2rem 0;
+            }
+            
+            .hero-content h1 {
+                font-size: 1.8rem;
+            }
+            
+            .products {
+                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .about {
+            text-align: center;
+            padding: 2rem;
+            background-color: #fff5f7;
+            margin: 2rem 0;
+            border-radius: 10px;
+        }
+
+        .about h2 {
+            color: #ff6b8b;
+            margin-bottom: 1rem;
+        }
+
+        .about p {
+            color: #666;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">LENFRIEND</div>
+            <p>Món quà nhỏ mang đầy yêu thương</p>
+        </div>
+    </header>
+    
+    <div class="top-bar">
+        <div class="container">
+            <div class="top-bar-content">
+                <div class="search-bar">
+                    <input type="text" placeholder="Tìm kiếm sản phẩm...">
+                    <button>Tìm</button>
+                </div>
+                <div class="user-actions">
+                    <a href="#" id="open-login">
+                        <span>Đăng nhập</span>
+                    </a>
+                    <a href="#" class="cart-icon">
+                        <span>Giỏ hàng</span>
+                        <span class="cart-count">0</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <nav>
+        <ul>
+            <li><a href="#trang-chu">Trang chủ</a></li>
+            <li>
+                <a href="#san-pham">Sản phẩm</a>
+                <ul class="submenu">
+                    <li><a href="#">Móc khóa hình thú</a></li>
+                    <li><a href="#">Móc khóa hình trái cây</a></li>
+                    <li><a href="#">Móc khóa nhân vật</a></li>
+                    <li><a href="#">Bộ sưu tập mới</a></li>
+                </ul>
+            </li>
+            <li><a href="#custom">Đặt hàng theo yêu cầu</a></li>
+            <li><a href="#blog">Blog</a></li>
+            <li><a href="#gioi-thieu">Giới thiệu</a></li>
+            <li><a href="#lien-he">Liên hệ</a></li>
+        </ul>
+    </nav>
+    
+    <section class="hero-banner">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Móc khóa len handmade<br>Món quà độc đáo và ý nghĩa</h1>
+                <p>Mỗi sản phẩm đều được làm thủ công với sự tỉ mỉ và tình yêu thương. Giảm ngay 15% cho khách hàng mới!</p>
+                <a href="#san-pham" class="btn">Mua ngay</a>
+                <a href="#custom" class="btn secondary-btn">Đặt theo yêu cầu</a>
+            </div>
+        </div>
+    </section>
+    
+    <section id="san-pham" class="container">
+        <h2 class="section-title">Sản phẩm nổi bật</h2>
+        
+        <div class="product-filters">
+            <div class="filter-group">
+                <button class="filter-btn active">Tất cả</button>
+                <button class="filter-btn">Hình thú</button>
+                <button class="filter-btn">Trái cây</button>
+                <button class="filter-btn">Chibi</button>
+            </div>
+            <select class="sort-dropdown">
+                <option>Sắp xếp theo</option>
+                <option>Giá thấp đến cao</option>
+                <option>Giá cao đến thấp</option>
+                <option>Mới nhất</option>
+                <option>Bán chạy nhất</option>
+            </select>
+        </div>
+        
+        <div class="products">
+            <div class="product-card">
+                <span class="product-badge">Bán chạy</span>
+                <div class="product-image">
+                    <img src="images/download.jpg" alt="Móc khóa hình gấu">
+                    <button class="wishlist-btn">♡</button>
+                </div>
+                <div class="product-info">
+                    <div class="product-category">Hình thú</div>
+                    <h3 class="product-title">Móc khóa gấu nhỏ</h3>
+                    <div class="product-rating">
+                        <span class="stars">★★★★★</span>
+                        <span class="review-count">(24)</span>
+                    </div>
+                    <div class="product-price">
+                        <div>
+                            <span class="price">30.000đ</span>
+                            <span class="old-price">35.000đ</span>
+                        </div>
+                    </div>
+                    <div class="product-actions">
+                        <button class="btn secondary-btn buy-now">Mua</button>
+                        <button class="btn add-to-cart">Thêm vào giỏ</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="images/download (2).jpg" alt="Móc khóa hình mèo">
+                    <button class="wishlist-btn">♡</button>
+                </div>
+                <div class="product-info">
+                    <div class="product-category">Hình thú</div>
+                    <h3 class="product-title">Móc khóa mèo </h3>
+                    <div class="product-rating">
+                        <span class="stars">★★★★☆</span>
+                        <span class="review-count">(18)</span>
+                    </div>
+                    <div class="product-price">
+                        <div>
+                            <span class="price">30.000đ</span>
+                        </div>
+                    </div>
+                    <div class="product-actions">
+                        <button class="btn secondary-btn buy-now">Mua</button>
+                        <button class="btn add-to-cart">Thêm vào giỏ</button>
+                    </div>
+
+                    
+                </div>
+            </section>
+                    <section id="gioi-thieu" class="about">
+                        <h2>Về Chúng Tôi</h2>
+                        <p>Chúng tôi là một cửa hàng nhỏ chuyên sản xuất các sản phẩm len handmade với tình yêu và sự tỉ mỉ. Mỗi móc khóa len đều được làm thủ công, mang đến sự độc đáo và ý nghĩa cho người sử dụng.</p>
+                        <br>
+                        <p>Với hơn 5 năm kinh nghiệm trong lĩnh vực đan len, chúng tôi tự hào mang đến những sản phẩm chất lượng, đáng yêu và bền đẹp. Mỗi móc khóa là một tác phẩm nghệ thuật nhỏ, được tạo ra từ sự khéo léo và tâm huyết.</p>
+                    </section>
+                    
+                    <footer id="lien-he">
+                        <h3>Móc Khóa Len Handmade</h3>
+                        <div class="contact-info">
+                            <p>Địa chỉ: K64/37 Trần Cao Vân, Hoà Thuận Tây, Quận Thanh Khê, TP. Đà Nẵng </p>
+                            <p>Điện thoại: 033.257.1561 </p>
+                            <p>Email: tranduykhoa306@gmail.com </p>
+                            <p>Giờ làm việc: 8:00 - 20:00 (Thứ 2 - Chủ nhật)</p>
+                        </div>
+                        <p>&copy; 2025 Móc Khóa Len Handmade. Tất cả quyền được bảo lưu.</p>
+                    </footer>
+                </body>
+                </html>
